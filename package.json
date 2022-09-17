@@ -1,0 +1,22 @@
+{
+  "name": "frontutilpackage",
+  "version": "0.0.3",
+  "description": "",
+  "main": "index.js",
+  "keywords": [
+    "utils",
+    "js"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall":"echo \"安装前\" && exit 1",
+    "install":"echo \"安装.........................\" ",
+    "postinstall":"echo \"安装后\" "
+    
+  },
+  "author": "Electrolux",
+  "license": "ISC",
+  "dependencies": {
+    "js-cookie": "^3.0.1"
+  }
+}
