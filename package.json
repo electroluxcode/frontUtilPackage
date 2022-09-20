@@ -1,7 +1,7 @@
 {
   "name": "frontutilpackage",
-  "version": "0.0.3",
-  "description": "",
+  "version": "0.0.4",
+  "description": "个人封装的常用js包库",
   "main": "index.js",
   "keywords": [
     "utils",
@@ -9,14 +9,14 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall":"echo \"安装前\" && exit 1",
-    "install":"echo \"安装.........................\" ",
-    "postinstall":"echo \"安装后\" "
-    
+    "preinstall": "echo \"安装前\" && exit 1",
+    "install": "echo \"安装.........................\" ",
+    "postinstall": "echo \"安装后\" "
   },
   "author": "Electrolux",
   "license": "ISC",
   "dependencies": {
-    "js-cookie": "^3.0.1"
+    "js-cookie": "^3.0.1",
+    "web-tracing": "^10.5.1"
   }
 }

@@ -1,7 +1,7 @@
 /**
  * @param {Array} value
  * @returns {Boolean}
- * @eg checkPermission(["value"])
+ * @example checkPermission(["value"])
  */
 function checkPermission(value) {
     if (value && value instanceof Array && value.length > 0) {

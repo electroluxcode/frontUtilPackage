@@ -2,7 +2,7 @@
  * 
  * @param {*} fn 
  * @param {*} time 
- * @eg 两个的示例是一样的 function a(){console.log("data")};let b=new debounce(a,1000);b()
+ * @example 两个的示例是一样的 function a(){console.log("data")};let b=new debounce(a,1000);b()
  */
 // 最后一次 input输入 防抖
 function debounce(fn,time){

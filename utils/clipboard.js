@@ -1,7 +1,7 @@
 /**
  * 
  * @param {*} copyValue
- * @eg 复制到剪切板的方法 
+ * @example 复制到剪切板的方法 
  */
 function copyToClipboard(copyValue) {
     //创建一个新组件

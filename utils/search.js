@@ -4,9 +4,9 @@
  * @param {*} name 
  * @param {*} value 
  * @returns  
- * @eg var test=[{"id":1,"name":"小明"},{"id":2,"name":"小红"}];
+ * @example var test=[{"id":1,"name":"小明"},{"id":2,"name":"小红"}];
  *      commonSearch(test,"name",2)
- * @eg 对字符串进行正则模糊查询，int类会报错
+ * @example 对字符串进行正则模糊查询，int类会报错
  */
 function  commonSearch(data, name,value) {
     let result=[];

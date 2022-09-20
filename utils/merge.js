@@ -3,8 +3,8 @@
  * @param {Object} target
  * @param {(Object|Array)} source
  * @returns {Object}
- * @eg 合并数组
- * @eg var b={"i2d":5} var a={"i":5} objectMerge(a,b)
+ * @example 合并数组
+ * @example var b={"i2d":5} var a={"i":5} objectMerge(a,b)
  */
  export function objectMerge(target, source) {
     if (typeof target !== 'object') {
@@ -31,7 +31,7 @@
  * If you want to use a perfect deep copy, use lodash's _.cloneDeep
  * @param {Object} source
  * @returns {Object}
- * @eg 深拷贝
+ * @example 深拷贝
  */
 export function deepClone(source) {
   if (!source && typeof source !== 'object') {

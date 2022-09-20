@@ -1,5 +1,5 @@
 /**
- *  @eg  //订阅一个频道
+ *  @example  //订阅一个频道
  *      let pid = PubSub.subscribe('pay', (data) => {
             console.log('商家接到了订单,准备开始制作', data)
         })

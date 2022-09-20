@@ -3,8 +3,8 @@
  * @param {*} arr 
  * @param {*} e 
  * @returns object
- * @eg 数组去重 
- * @eg var arr=   [{ id: 3, name: "ceshi1" },{ id: 1, name: "ceshi1" }, { id: 1, name: "ceshi1" }, { id: 9, name: "ceshi1" }, { id: 3, name: "ceshi1" }]
+ * @example 数组去重 
+ * @example var arr=   [{ id: 3, name: "ceshi1" },{ id: 1, name: "ceshi1" }, { id: 1, name: "ceshi1" }, { id: 9, name: "ceshi1" }, { id: 3, name: "ceshi1" }]
  *  unique(arr,"id")
  */
 function unique(arr,e){
@@ -18,3 +18,12 @@ function unique(arr,e){
     }
     return arr1;  
   }
+
+
+  /**
+ * @param {Array} arr
+ * @returns {Array}
+ */
+export function uniqueArr(arr) {
+  return Array.from(new Set(arr))
+}

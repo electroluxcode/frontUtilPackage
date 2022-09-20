@@ -30,8 +30,8 @@ function position() {
  * @param {number} to
  * @param {number} duration
  * @param {Function} callback
- * @eg  scrollTo(800, 1000) 好用，到达距离头部800的地方用时1秒
- * @eg  滚动
+ * @example  scrollTo(800, 1000) 好用，到达距离头部800的地方用时1秒
+ * @example  滚动
  */
 
 export function scrollTo(to, duration, callback) {

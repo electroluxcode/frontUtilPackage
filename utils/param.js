@@ -2,8 +2,8 @@
  * 
  * @param {*} url 
  * @returns object
- * @eg 直接getQueryObject就可以了
- * @eg 获取get或者post里面的参数
+ * @example 直接getQueryObject就可以了
+ * @example 获取get或者post里面的参数
  */
 function getQueryObject(url) {
     url = url == null ? window.location.href : url

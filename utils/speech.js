@@ -1,7 +1,7 @@
 /**
  * 
- * @eg  h5文字转语音
- * @eg : speech("有效")
+ * @example  h5文字转语音
+ * @example : speech("有效")
  */
 
  function speech(txt){

@@ -3,9 +3,9 @@
  * @param {(Object|string|number)} time
  * @param {string} cFormat
  * @returns {string | null}
- * @eg parseTime("1548221490638") 会输出 '2019-01-23 13:31:30'
- * @eg parseTime("1548221490638",'{y}-{m}-{d}') 会输出 '2019-01-23'
- * @eg 用来进行时间戳的转化
+ * @example parseTime("1548221490638") 会输出 '2019-01-23 13:31:30'
+ * @example parseTime("1548221490638",'{y}-{m}-{d}') 会输出 '2019-01-23'
+ * @example 用来进行时间戳的转化
  */
 
 // var time = {day:4,mouth:6,year:1930}
@@ -53,11 +53,11 @@
   }
 /**
 
- * @eg  dateStrForma('20190626', 'YYYYMMDD', 'YYYY年MM月DD日') ==> 2019年06月26日
- * @eg  dateStrForma('121220190626', '----YYYYMMDD', 'YYYY年MM月DD日') ==> 2019年06月26日
- * @eg  dateStrForma('2019年06月26日', 'YYYY年MM月DD日', 'YYYYMMDD') ==> 20190626
- * @eg  dateStrForma('20050106', 'YYYYMMDD', 'YYYY---MMDD') '2005---0106'
- * @eg  用来转化时间字符串
+ * @example  dateStrForma('20190626', 'YYYYMMDD', 'YYYY年MM月DD日') ==> 2019年06月26日
+ * @example  dateStrForma('121220190626', '----YYYYMMDD', 'YYYY年MM月DD日') ==> 2019年06月26日
+ * @example  dateStrForma('2019年06月26日', 'YYYY年MM月DD日', 'YYYYMMDD') ==> 20190626
+ * @example  dateStrForma('20050106', 'YYYYMMDD', 'YYYY---MMDD') '2005---0106'
+ * @example  用来转化时间字符串
  */
  export function dateStrForma(str, from, to){
 	//'20190626' 'YYYYMMDD' 'YYYY年MM月DD日'
@@ -87,9 +87,9 @@
  * @param {number} time
  * @param {string} option
  * @returns {string}
- * @eg  formatTime(new Date() - 60 * 60 * 24 * 1 * 1000))  两分钟前
- * @eg  标准时间转化 const d = new Date('2018-07-13 17:54:01');
- * @eg  formatTime(d, '{y}-{m}-{d} {h}:{i}')
+ * @example  formatTime(new Date() - 60 * 60 * 24 * 1 * 1000))  两分钟前
+ * @example  标准时间转化 const d = new Date('2018-07-13 17:54:01');
+ * @example  formatTime(d, '{y}-{m}-{d} {h}:{i}')
  */
  export function formatTime(time, option) {
   if (('' + time).length === 10) {
