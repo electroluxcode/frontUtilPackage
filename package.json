@@ -1,6 +1,6 @@
 {
   "name": "frontutilpackage",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "个人封装的常用js包库",
   "main": "index.js",
   "keywords": [

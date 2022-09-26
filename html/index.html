@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function loadWorder(url) {
+            let w1 = new Worker(url);
+            w1.postMessage("父发送");
+            w1.addEventListener("message", function (evt) {
+                console.log(evt.data, "父接受")
+            });
+            // 子进程
+            //  2. 数据的获取（主线程发送消息给woker）
+            // addEventListener("message", function (evt) {
+            //     // evt.data
+            //     console.log(evt.data, "接受：子组件的数据");
+            // });
+            // postMessage("发送：子组件的数据");
+            // 最后会打印出来  父接收的数据（message里面的），然后是子接受的数据
+        }
+        loadWorder('index.js')
+       
+    </script>
+
+</body>
+
+</html>
