@@ -226,11 +226,11 @@ function addListenerIdPos(idName) {
 function addMonitorPage() {
     try {
         window.addEventListener("pageshow", () => {
-            window.timeStr=new Date().getTime()
+            window.timeStr = new Date().getTime()
             // alert("开始监控")
         });
         window.addEventListener("load", () => {
-            window.timeStr=new Date().getTime()
+            window.timeStr = new Date().getTime()
             // alert("开始监控")
         });
         window.addEventListener('pagehide', () => {
@@ -276,10 +276,10 @@ function addMonitorPage() {
 
 
 /**
- * @des监控用户行为（界面停留时间） #详情可以看 html/monitor
+ * @des 监控用户行为（元素停留时间） #详情可以看 html/monitor 这里的20是阈值，我们这里是要考虑到border margin padding对结果的影响
  * @eg addMonitorElement("blue")
  */
- function addMonitorElement(idName) {
+function addMonitorElement(idName) {
     function timer(n_hour, n_min, n_sec) {
         // var n_sec = 0; //秒
         // var n_min = 0; //分
@@ -321,8 +321,8 @@ function addMonitorPage() {
     }
     //暂停
     window.isFirstEle = true
-    window.str_hour=0,window.str_min=0, window.str_sec = 0
-    
+    window.str_hour = 0, window.str_min = 0, window.str_sec = 0
+
 
     this.idName = idName
     function handleScroll() {
@@ -336,14 +336,16 @@ function addMonitorPage() {
         var eleHeight = document.getElementById(idName).offsetTop
         // console.log("bu能看见元素",eleHeight,scrollTop,clientHeight)
         //元素高度
-        var Height = Number(document.getElementById("blue").style.height.replace('px', ''))
+        //元素高度
+        // var Height = Number(document.getElementById("blue").style.height.replace('px', ''))
+        var Height = Number(document.getElementById(idName).offsetHeight)
         if (eleHeight < clientHeight + scrollTop + 20 && clientHeight + scrollTop + 20 < eleHeight + Height + window.innerHeight) {
             console.log("能看见元素", eleHeight, scrollTop, clientHeight)
             //初始化计时器
             if (window.isFirstEle == true) {
                 window.n_timer = timer(0, 0, 0);
-                window.isFirstEle=false
-            } else {             
+                window.isFirstEle = false
+            } else {
                 clearInterval(window.n_timer);
                 window.n_timer = timer(window.str_hour, window.str_min, window.str_sec);
             }
@@ -369,4 +371,149 @@ function addMonitorPage() {
     const throttleHandleScroll = thorttle(handleScroll, 100)
     // 监听滚动
     window.addEventListener('scroll', throttleHandleScroll);
+}
+
+
+/**
+ * 
+ * @param {*} childIdName 
+ * @param {*} parentIdName 
+ * @param {*} data 初始data
+ * @param {*} count 单页数量
+ * @param {*} count 单页数量
+ * @param {*} that 里面是赋值的data
+ * @des 虚拟列表array 示例
+ * @eg 
+ * @调用可以看html/virtuallist.html
+ */
+function addMonitorArrayElement(childIdName, parentIdName, data, count, border, that) {
+    // this.childrenHeight = childrenHeight
+    // 初始化前几个数据
+    for (var n = 0; n < 20; n++) {
+        this.$set(that.arrayData, n, (data[n]))
+    }
+    const handleScroll = () => {
+        //可视区域大小 一开始本来是想要动态计算，结果发现运用在实际项目中受到padding 和 margin 之类的影响太大了，于是就去掉了。
+        // var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+
+        let parentHeight = document.getElementById(parentIdName).offsetHeight
+        // document.querySelectorAll('#text') 子元素数量 
+
+        // 这里可以加一点阈值，要算padding和margin 之类的,这里可以比较  childrenHeight（前者小一点，没算边框。后者大一点）
+        let childrenHeight = parentHeight / data.length + border
+        // let childrenHeight = document.getElementById(childIdName).offsetHeight
+
+        // console.log("该界面不考虑margin，padding可以渲染多少数据", count)
+
+        // 距顶部 有指定了DTD 是前者（DOCTYPE） 不然是后者    // safiri的函数  window.pageYOffset 
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+        // console.log("这一界面的高度",scrollTop.toFixed(2),"下一界面的高度",scrollTop+window.innerHeight.toFixed(2) )
+        // 前面的数据直接包括进来
+        let initIndex = (scrollTop.toFixed(2) / Number(childrenHeight).toFixed(2)).toFixed(0)
+        console.log(parentHeight, scrollTop, Number(childrenHeight))
+        initIndex = initIndex > 0 ? initIndex : 0
+
+        //后40的数据直接包括进来  Number(initIndex) + Number(count) + 40 是目前的底线
+        let lastIndex = Number(initIndex) + Number(count) + count > data.length ? data.length : Number(initIndex) + Number(count)
+        console.log("这一界面的起始数据", initIndex, "结束数据", lastIndex, "")
+        for (let i = initIndex; i < lastIndex; i++) {
+            // that.arrayData[i]=(data[i])
+            this.$set(that.arrayData, i, (data[i]))
+            // console.log(data)
+        }
+        console.log(that.arrayData)
+        // console.log(this.arrayData)
+    }
+    function thorttle(fn, time) {
+        window.flag = null;
+        return function () {
+            if (!window.flag) {
+                window.flag = true;
+                fn();
+                setTimeout(() => {
+                    window.flag = false;
+                }, time)
+            }
+        }
+    }
+    // 滚动节流
+
+    const throttleHandleScroll = thorttle(handleScroll, 100)
+    // 监听滚动
+    window.addEventListener('scroll', throttleHandleScroll);
+
+}
+
+/**
+ * 
+ * @param {*} childIdName 
+ * @param {*} parentIdName 
+ * @param {*} data 
+ * @param {*} count 
+ * @param {*} border 
+ * @param {*} that  里面是赋值的data
+ * @des 虚拟列表array 示例
+ * @eg setTimeout(() => {
+            this.addMonitorObjectElement("text", "container", this.objectData, 30, 5, this)
+       }, 0)
+ */
+function addMonitorObjectElement(childIdName, parentIdName, data, count, border, that) {
+    // this.childrenHeight = childrenHeight
+    // 初始化前几个数据
+    for (var n = 0; n < 20; n++) {
+        this.$set(that.lastData, n, (data[n]))
+        // that.lastData[n] =(data[n])
+    }
+    const handleScroll = () => {
+        //可视区域大小 一开始本来是想要动态计算，结果发现运用在实际项目中受到padding 和 margin 之类的影响太大了，于是就去掉了。
+        var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+
+        let parentHeight = document.getElementById(parentIdName).offsetHeight
+        // document.querySelectorAll('#text') 子元素数量 
+
+        // 这里可以加一点阈值，要算padding和margin 之类的,这里可以比较  childrenHeight（前者小一点，没算边框。后者大一点）
+        let childrenHeight = parentHeight / data.length + border
+        // let childrenHeight = document.getElementById(childIdName).offsetHeight
+
+        // console.log("该界面不考虑margin，padding可以渲染多少数据", count)
+
+        // 距顶部 有指定了DTD 是前者（DOCTYPE） 不然是后者    // safiri的函数  window.pageYOffset 
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+        // console.log("这一界面的高度",scrollTop.toFixed(2),"下一界面的高度",scrollTop+window.innerHeight.toFixed(2) )
+        // 前面的数据直接包括进来
+        let initIndex = (scrollTop.toFixed(2) / Number(childrenHeight).toFixed(2)).toFixed(0)
+        // console.log(parentHeight, scrollTop, Number(childrenHeight))
+        initIndex = initIndex > 0 ? initIndex : 0
+
+        //后40的数据直接包括进来  Number(initIndex) + Number(count) + 40 是目前的底线
+        let lastIndex = Number(initIndex) + Number(count) + count > data.length ? data.length : Number(initIndex) + Number(count)
+        console.log("这一界面的起始数据", initIndex, "结束数据", lastIndex, "")
+        for (let i = initIndex; i < lastIndex; i++) {
+            // that.lastData[i]=(data[i])
+            this.$set(that.lastData, i, (data[i]))
+            // console.log(data)
+        }
+        // console.log(that.objectData)
+        console.log(this.lastData)
+    }
+    function thorttle(fn, time) {
+        window.flag = null;
+        return function () {
+            if (!window.flag) {
+                window.flag = true;
+                fn();
+                setTimeout(() => {
+                    window.flag = false;
+                }, time)
+            }
+        }
+    }
+    // 滚动节流
+
+    const throttleHandleScroll = thorttle(handleScroll, 100)
+    // 监听滚动
+    window.addEventListener('scroll', throttleHandleScroll);
+
 }

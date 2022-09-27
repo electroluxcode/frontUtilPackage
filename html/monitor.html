@@ -113,7 +113,8 @@
             var eleHeight = document.getElementById(idName).offsetTop
             // console.log("bu能看见元素",eleHeight,scrollTop,clientHeight)
             //元素高度
-            var Height = Number(document.getElementById("blue").style.height.replace('px', ''))
+            // var Height = Number(document.getElementById("blue").style.height.replace('px', ''))
+            var Height = Number(document.getElementById(idName).offsetHeight)
             if (eleHeight < clientHeight + scrollTop + 20 && clientHeight + scrollTop + 20 < eleHeight + Height + window.innerHeight) {
                 console.log("能看见元素", eleHeight, scrollTop, clientHeight)
                 //初始化计时器
