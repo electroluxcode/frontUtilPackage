@@ -390,6 +390,7 @@ function addMonitorArrayElement(childIdName, parentIdName, data, count, border, 
     // this.childrenHeight = childrenHeight
     // 初始化前几个数据
     for (var n = 0; n < 20; n++) {
+        // that.lastData[i]=(data[i])
         this.$set(that.arrayData, n, (data[n]))
     }
     const handleScroll = () => {
@@ -403,13 +404,11 @@ function addMonitorArrayElement(childIdName, parentIdName, data, count, border, 
         let childrenHeight = parentHeight / data.length + border
         // let childrenHeight = document.getElementById(childIdName).offsetHeight
 
-        // console.log("该界面不考虑margin，padding可以渲染多少数据", count)
-
         // 距顶部 有指定了DTD 是前者（DOCTYPE） 不然是后者    // safiri的函数  window.pageYOffset 
-        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop  || window.pageYOffset ;
 
         // console.log("这一界面的高度",scrollTop.toFixed(2),"下一界面的高度",scrollTop+window.innerHeight.toFixed(2) )
-        // 前面的数据直接包括进来
+        // 前面的数据直接包括进来,这里的数据进度要快一点
         let initIndex = (scrollTop.toFixed(2) / Number(childrenHeight).toFixed(2)).toFixed(0)
         console.log(parentHeight, scrollTop, Number(childrenHeight))
         initIndex = initIndex > 0 ? initIndex : 0
@@ -462,8 +461,8 @@ function addMonitorObjectElement(childIdName, parentIdName, data, count, border,
     // this.childrenHeight = childrenHeight
     // 初始化前几个数据
     for (var n = 0; n < 20; n++) {
+        // that.lastData[i]=(data[i])
         this.$set(that.lastData, n, (data[n]))
-        // that.lastData[n] =(data[n])
     }
     const handleScroll = () => {
         //可视区域大小 一开始本来是想要动态计算，结果发现运用在实际项目中受到padding 和 margin 之类的影响太大了，于是就去掉了。
@@ -475,8 +474,6 @@ function addMonitorObjectElement(childIdName, parentIdName, data, count, border,
         // 这里可以加一点阈值，要算padding和margin 之类的,这里可以比较  childrenHeight（前者小一点，没算边框。后者大一点）
         let childrenHeight = parentHeight / data.length + border
         // let childrenHeight = document.getElementById(childIdName).offsetHeight
-
-        // console.log("该界面不考虑margin，padding可以渲染多少数据", count)
 
         // 距顶部 有指定了DTD 是前者（DOCTYPE） 不然是后者    // safiri的函数  window.pageYOffset 
         var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -517,3 +514,33 @@ function addMonitorObjectElement(childIdName, parentIdName, data, count, border,
     window.addEventListener('scroll', throttleHandleScroll);
 
 }
+
+
+function blockLoading(originData,outputData) {
+    
+    let total = originData.length;
+    // 一次插入 20 条
+    let once = 20;
+    //每条记录的索引
+    let index = 0;
+    //循环加载数据	
+    function loop(curTotal, curIndex, data) {
+        if (curTotal <= 0) {
+            return false;
+        }
+        //每页多少条 少于once 我们就取值
+        let pageCount = Math.min(curTotal, once);
+        window.requestAnimationFrame(function () {
+            for (let i =curIndex; i < curIndex+pageCount; i++) {
+                outputData.push(originData[i])
+            }
+            loop(curTotal - pageCount, curIndex + pageCount, data);
+        });
+        
+    }
+    loop(total, index, originData);
+    
+}
+let originData=[0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3]
+let outputData=[]
+blockLoading(originData,outputData)

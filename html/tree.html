@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>demo</title>
+
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<body>
+
+    <div id="box">
+
+
+        <el-tree :data="source" :props="defaultProps" show-checkbox ></el-tree>
+
+    </div>
+</body>
+<script type="text/javascript">
+    var box = new Vue({
+        el: "#box",
+        data: {
+            source: [{ id: 1, parentId: 0, name: "一级菜单A", rank: 1 },
+            { id: 2, parentId: 0, name: "一级菜单B", rank: 1 },
+            { id: 3, parentId: 0, name: "一级菜单C", rank: 1 },
+            { id: 4, parentId: 1, name: "二级菜单A-A", rank: 2 },
+            { id: 4, parentId: 1, name: "二级菜单A-A", rank: 2 },
+            { id: 5, parentId: 1, name: "二级菜单A-B", rank: 2 },
+            { id: 6, parentId: 2, name: "二级菜单B-A", rank: 2 },
+            { id: 7, parentId: 4, name: "三级菜单A-A-A", rank: 3 },
+            { id: 8, parentId: 7, name: "四级菜单A-A-A-A", rank: 4 },
+            { id: 9, parentId: 8, name: "五级菜单A-A-A-A-A", rank: 5 },
+            { id: 10, parentId: 9, name: "六级菜单A-A-A-A-A-A", rank: 6 },
+            { id: 11, parentId: 10, name: "七级菜单A-A-A-A-A-A-A", rank: 7 },
+            { id: 12, parentId: 11, name: "八级菜单A-A-A-A-A-A-A-A", rank: 8 },
+            { id: 13, parentId: 12, name: "九级菜单A-A-A-A-A-A-A-A-A", rank: 9 },
+            { id: 14, parentId: 13, name: "十级菜单A-A-A-A-A-A-A-A-A-A", rank: 10 },],
+            defaultProps: {
+                children: 'children',
+                label: 'name'
+            }
+
+        },
+        mounted() {
+            this.source = this.treeData(this.source, 'id', 'parentId', 'children')
+
+        },
+        methods: {
+            treeData(source, id, parentId, children) {
+                //深复制
+                let cloneData = JSON.parse(JSON.stringify(source))
+                //所有项目添加children
+                let output = []
+                cloneData.forEach((father) => {
+                    let temp = []
+                    //在这里找parentId，先组装temp 接下来组装father。
+                    // 这个循环中 father[id] 和 children[id] 始终相等 ,一轮循环后.father是每一个二级菜单。父带一个children
+                    cloneData.forEach((child) => {
+                        //每个只执行一次
+                        if (father[id] == child[parentId]) {
+                            temp.push(child)
+                            //淦，利用 浅复制来进行嵌套赋值
+                            // temp.length > 0 ? father[children] = JSON.parse(JSON.stringify(temp)) : '11'
+                            temp.length > 0 ? father[children] = temp : '11'
+                        }
+                        // return temp
+                    });
+                    //最后组装一下
+                    if (father[parentId] == 0) {
+                        output.push(father)
+                    }
+                })
+                return output
+            }
+        },
+    })
+</script>
+
+</html>

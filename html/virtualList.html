@@ -39,8 +39,9 @@
             car: { name: "红旗", color: "黑色", price: "50万" },
             //最终数据
             lastData: [5],
-            //初始数据
+            //初始array数据
             initData: [],
+            // 初始object数据
             objectData: []
         },
         mounted() {
@@ -49,7 +50,9 @@
                 this.objectData.push({ id: i, name: "hihi" })
             }
             setTimeout(() => {
+                //array 数组虚拟列表
                 // this.addMonitorArrayElement("text", "container", this.initData, 30, 20, this)
+                // object 对象虚拟列表
                 this.addMonitorObjectElement("text", "container", this.objectData, 30, 5, this)
             }, 0)
 
@@ -76,7 +79,7 @@
                     // console.log("该界面不考虑margin，padding可以渲染多少数据", count)
 
                     // 距顶部 有指定了DTD 是前者（DOCTYPE） 不然是后者    // safiri的函数  window.pageYOffset 
-                    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop ||  window.pageYOffset ;
 
                     // console.log("这一界面的高度",scrollTop.toFixed(2),"下一界面的高度",scrollTop+window.innerHeight.toFixed(2) )
                     // 前面的数据直接包括进来

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>demo</title>
+
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<body>
+
+    <div id="box">
+
+
+        <div id="container" style="border: 1px solid black;overflow: auto">
+
+            <!-- <div id="text" v-for="(value,name) in lastData" :key="name" style="min-height: 40px;">{{value.index}}--{{value.name}}</div> -->
+            <el-table :data="lastData" style="width: 100%">
+                <el-table-column prop="id" label="日期" width="180">
+                </el-table-column>
+                <el-table-column prop="name" label="姓名" width="180">
+                </el-table-column>
+            </el-table>
+
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript">
+    var box = new Vue({
+        el: "#box",
+        data: {
+            car: { name: "红旗", color: "黑色", price: "50万" },
+            //最终数据
+            lastData: [5],
+            //初始array数据
+            initData: [],
+            // 初始object数据
+            objectData: []
+        },
+        mounted() {
+            for (let i = 0; i < 100000; i++) {
+                this.initData.push(i)
+                this.objectData.push({ id: i, name: "hihi" })
+            }
+            setTimeout(() => {
+                //array 数组虚拟列表
+                // this.addMonitorArrayElement("text", "container", this.initData, 30, 20, this)
+                // object 对象虚拟列表
+                this.blockLoading(this.objectData, this)
+            }, 0)
+
+        },
+        methods: {
+            blockLoading(originData, that) {
+                let total = originData.length;
+                // 一次插入 200 条
+                let once = 200;
+                //每条记录的索引
+                let index = 0;
+                //循环加载数据	
+                function loop(curTotal, curIndex, data) {
+                    if (curTotal <= 0) {
+                        return false;
+                    }
+                    //每页多少条 少于once 我们就取值
+                    let pageCount = Math.min(curTotal, once);
+                    window.requestAnimationFrame(function () {
+                        for (let i = curIndex; i < curIndex + pageCount; i++) {
+                            that.$set(that.lastData, i, (data[i]))
+                        }
+                        loop(curTotal - pageCount, curIndex + pageCount, data);
+                    });
+                }
+                loop(total, index, originData);
+
+            }
+        }
+
+
+    })
+</script>
+
+</html>
