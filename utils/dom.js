@@ -380,9 +380,9 @@ function addMonitorElement(idName) {
  * @param {*} parentIdName 
  * @param {*} data 初始data
  * @param {*} count 单页数量
- * @param {*} count 单页数量
+ * @param {*} count 单页数量  count, border 和  childIdName 一般只要一个就好了，前者后者用来控制显示的元素
  * @param {*} that 里面是赋值的data
- * @des 虚拟列表array 示例
+ * @des 虚拟列表array 示例 
  * @eg 
  * @调用可以看html/virtuallist.html
  */
