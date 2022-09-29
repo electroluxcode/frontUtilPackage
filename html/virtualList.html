@@ -36,13 +36,12 @@
     var box = new Vue({
         el: "#box",
         data: {
-            car: { name: "红旗", color: "黑色", price: "50万" },
-            //最终数据
             lastData: [5],
-            //初始array数据
-            initData: [],
-            // 初始object数据
-            objectData: []
+            query: {
+                querypage: 1, //获取页码
+                pagesize: 10, //每页返回数量
+                keyword: "", //搜索 可搜邮箱 用户名 手机号
+            },
         },
         mounted() {
             for (let i = 0; i < 100000; i++) {
@@ -50,137 +49,13 @@
                 this.objectData.push({ id: i, name: "hihi" })
             }
             setTimeout(() => {
-                //array 数组虚拟列表
-                // this.addMonitorArrayElement("text", "container", this.initData, 30, 20, this)
-                // object 对象虚拟列表
-                this.addMonitorObjectElement("text", "container", this.objectData, 30, 5, this)
+                
             }, 0)
 
         },
         methods: {
 
-            addMonitorArrayElement(childIdName, parentIdName, data, count, border, that) {
-                // this.childrenHeight = childrenHeight
-                // 初始化前几个数据
-                for (var n = 0; n < 20; n++) {
-                    this.$set(that.lastData, n, (data[n]))
-                }
-                const handleScroll = () => {
-                    //可视区域大小
-                    var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
-
-                    let parentHeight = document.getElementById(parentIdName).offsetHeight
-                    // document.querySelectorAll('#text') 子元素数量 
-
-                    // 这里可以加一点阈值，要算padding和margin 之类的,这里可以比较  childrenHeight（前者小一点，没算边框。后者大一点）
-                    let childrenHeight = parentHeight / data.length + border
-                    // let childrenHeight = document.getElementById(childIdName).offsetHeight
-
-                    // console.log("该界面不考虑margin，padding可以渲染多少数据", count)
-
-                    // 距顶部 有指定了DTD 是前者（DOCTYPE） 不然是后者    // safiri的函数  window.pageYOffset 
-                    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop ||  window.pageYOffset ;
-
-                    // console.log("这一界面的高度",scrollTop.toFixed(2),"下一界面的高度",scrollTop+window.innerHeight.toFixed(2) )
-                    // 前面的数据直接包括进来
-                    //这一界面的高度 这里可以进行一些 错误的修补
-                    let firstTop = scrollTop.toFixed(2)
-                    let initIndex = (firstTop / Number(childrenHeight).toFixed(2)).toFixed(0)
-                 
-                    initIndex = initIndex > 0 ? initIndex : 0
-
-                    //后40的数据直接包括进来  Number(initIndex) + Number(count) + 40 是目前的底线
-                    let lastIndex = Number(initIndex) + Number(count) + count > data.length ? data.length : Number(initIndex) + Number(count)
-                    console.log("这一界面的起始数据", initIndex, "结束数据", lastIndex, "")
-                    for (let i = initIndex; i < lastIndex; i++) {
-                        // that.lastData[i]=(data[i])
-                        this.$set(that.lastData, i, (data[i]))
-                        // console.log(data)
-                    }
-                    console.log(that.lastData)
-                    console.log(this.lastData)
-                }
-                function thorttle(fn, time) {
-                    window.flag = null;
-                    return function () {
-                        if (!window.flag) {
-                            window.flag = true;
-                            fn();
-                            setTimeout(() => {
-                                window.flag = false;
-                            }, time)
-                        }
-                    }
-                }
-                // 滚动节流
-
-                const throttleHandleScroll = thorttle(handleScroll, 100)
-                // 监听滚动
-                window.addEventListener('scroll', throttleHandleScroll);
-
-            },
-            addMonitorObjectElement(childIdName, parentIdName, data, count, border, that) {
-                // this.childrenHeight = childrenHeight
-                // 初始化前几个数据
-                for (var n = 0; n < 20; n++) {
-                    this.$set(that.lastData, n, (data[n]))
-                    // that.lastData[n] =(data[n])
-                }
-                const handleScroll = () => {
-                    //可视区域大小
-                    var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
-
-                    let parentHeight = document.getElementById(parentIdName).offsetHeight
-                    // document.querySelectorAll('#text') 子元素数量 
-
-                    // 这里可以加一点阈值，要算padding和margin 之类的,这里可以比较  childrenHeight（前者小一点，没算边框。后者大一点）
-                    let childrenHeight = parentHeight / data.length + border
-                    // let childrenHeight = document.getElementById(childIdName).offsetHeight
-
-                    // console.log("该界面不考虑margin，padding可以渲染多少数据", count)
-
-                    // 距顶部 有指定了DTD 是前者（DOCTYPE） 不然是后者    // safiri的函数  window.pageYOffset 
-                    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-
-                    // console.log("这一界面的高度",scrollTop.toFixed(2),"下一界面的高度",scrollTop+window.innerHeight.toFixed(2) )
-                    // 前面的数据直接包括进来
-                    //这一界面的高度 这里可以进行一些 错误的修补
-                    let firstTop = scrollTop.toFixed(2)
-                    let initIndex = (firstTop / Number(childrenHeight).toFixed(2)).toFixed(0)
-                    // console.log(parentHeight, scrollTop, Number(childrenHeight))
-               
-                    initIndex = initIndex > 0 ? initIndex : 0
-
-                    //后40的数据直接包括进来  Number(initIndex) + Number(count) + 40 是目前的底线
-                    let lastIndex = Number(initIndex) + Number(count) + count > data.length ? data.length : Number(initIndex) + Number(count)
-                    console.log("这一界面的起始数据", initIndex, "结束数据", lastIndex, document.getElementById(parentIdName).getBoundingClientRect().top)
-                    for (let i = initIndex; i < lastIndex; i++) {
-                        // that.lastData[i]=(data[i])
-                        this.$set(that.lastData, i, (data[i]))
-                        // console.log(data)
-                    }
-                    // console.log(that.objectData)
-                    // console.log(this.lastData)
-                }
-                function thorttle(fn, time) {
-                    window.flag = null;
-                    return function () {
-                        if (!window.flag) {
-                            window.flag = true;
-                            fn();
-                            setTimeout(() => {
-                                window.flag = false;
-                            }, time)
-                        }
-                    }
-                }
-                // 滚动节流
-
-                const throttleHandleScroll = thorttle(handleScroll, 100)
-                // 监听滚动
-                window.addEventListener('scroll', throttleHandleScroll);
-
-            }
+         
         },
     })
 </script>

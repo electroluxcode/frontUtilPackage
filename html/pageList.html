@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>demo</title>
+
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<body>
+
+    <div id="box">
+
+
+        <div id="container" style="border: 1px solid black;overflow: auto">
+
+            <!-- <div id="text" v-for="(value,name) in lastData" :key="name" style="min-height: 40px;">{{value.index}}--{{value.name}}</div> -->
+            <el-table :data="lastData" style="width: 100%">
+                <el-table-column prop="id" label="日期" width="180">
+                </el-table-column>
+                <el-table-column prop="name" label="姓名" width="180">
+                </el-table-column>
+            </el-table>
+
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :current-page="querypage" :page-sizes="[5, 10, 20, 40]" :page-size="pagesize"
+                layout="total, sizes, prev, pager, next, jumper">
+            </el-pagination>
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript">
+    var box = new Vue({
+        el: "#box",
+        data: {
+            car: { name: "红旗", color: "黑色", price: "50万" },
+            //最终数据
+            lastData: [5],
+            //初始array数据
+            initData: [],
+            // 初始object数据
+            objectData: [],
+            querypage: 1, //初始页
+            pagesize: 10, //    每页的数据
+        },
+        mounted() {
+            for (let i = 0; i < 100000; i++) {
+                this.initData.push(i)
+                this.objectData.push({ id: i, name: "hihi" })
+            }
+            this.querypage = Number(this.getQueryObject().querypage)
+            this.pagesize = Number(this.getQueryObject().pagesize)
+            setTimeout(() => {
+                //array 数组虚拟列表
+                // this.addMonitorArrayElement("text", "container", this.initData, 30, 20, this)
+                // object 对象虚拟列表
+                let temp = this.pageLoading({}, this.objectData)
+                this.lastData = temp
+            }, 0)
+
+        },
+        methods: {
+            handleCurrentChange(val) {
+                this.querypage = val;  
+                window.location.href = window.location.href.split('?')[0]+"?querypage="+this.querypage+"&pagesize="+this.pagesize          
+            },
+            handleSizeChange(val) {
+                this.pagesize = val; //获取page-sizes里的每页显示几条数据的值，赋给我们自定义的每页显示数量的变量pageNum
+                console.log(this.query)
+                window.location.href = window.location.href.split('?')[0]+"?querypage="+this.querypage+"&pagesize="+this.pagesize
+                // window.location.href = 
+            },
+            getQueryObject(url) {
+                url = url == null ? window.location.href : url
+                const search = url.substring(url.lastIndexOf('?') + 1)
+                const obj = {}
+                const reg = /([^?&=]+)=([^?&=]*)/g
+                search.replace(reg, (rs, $1, $2) => {
+                    const name = decodeURIComponent($1)
+                    let val = decodeURIComponent($2)
+                    val = String(val)
+                    obj[name] = val
+                    return rs
+                })
+                return obj
+            },
+            pageLoading(curryPage, originData) {
+
+                let page = this.getQueryObject()
+                // if (JSON.stringify(curryPage) == "{}") {
+                //     console.log(getQueryObject())
+                // }
+                let nowData = originData.slice((page.querypage - 1) * page.pagesize, page.querypage * page.pagesize)
+                console.log(nowData)
+                return nowData
+            }
+        }
+
+
+    })
+</script>
+
+</html>

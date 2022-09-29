@@ -374,75 +374,6 @@ function addMonitorElement(idName) {
 }
 
 
-/**
- * 
- * @param {*} childIdName 
- * @param {*} parentIdName 
- * @param {*} data 初始data
- * @param {*} count 单页数量
- * @param {*} count 单页数量  count, border 和  childIdName 一般只要一个就好了，前者后者用来控制显示的元素
- * @param {*} that 里面是赋值的data
- * @des 虚拟列表array 示例 
- * @eg 
- * @调用可以看html/virtuallist.html
- */
-function addMonitorArrayElement(childIdName, parentIdName, data, count, border, that) {
-    // this.childrenHeight = childrenHeight
-    // 初始化前几个数据
-    for (var n = 0; n < 20; n++) {
-        // that.lastData[i]=(data[i])
-        this.$set(that.arrayData, n, (data[n]))
-    }
-    const handleScroll = () => {
-        //可视区域大小 一开始本来是想要动态计算，结果发现运用在实际项目中受到padding 和 margin 之类的影响太大了，于是就去掉了。
-        // var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
-
-        let parentHeight = document.getElementById(parentIdName).offsetHeight
-        // document.querySelectorAll('#text') 子元素数量 
-
-        // 这里可以加一点阈值，要算padding和margin 之类的,这里可以比较  childrenHeight（前者小一点，没算边框。后者大一点）
-        let childrenHeight = parentHeight / data.length + border
-        // let childrenHeight = document.getElementById(childIdName).offsetHeight
-
-        // 距顶部 有指定了DTD 是前者（DOCTYPE） 不然是后者    // safiri的函数  window.pageYOffset 
-        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop  || window.pageYOffset ;
-
-        // console.log("这一界面的高度",scrollTop.toFixed(2),"下一界面的高度",scrollTop+window.innerHeight.toFixed(2) )
-        // 前面的数据直接包括进来,这里的数据进度要快一点
-        let initIndex = (scrollTop.toFixed(2) / Number(childrenHeight).toFixed(2)).toFixed(0)
-        console.log(parentHeight, scrollTop, Number(childrenHeight))
-        initIndex = initIndex > 0 ? initIndex : 0
-
-        //后40的数据直接包括进来  Number(initIndex) + Number(count) + 40 是目前的底线
-        let lastIndex = Number(initIndex) + Number(count) + count > data.length ? data.length : Number(initIndex) + Number(count)
-        console.log("这一界面的起始数据", initIndex, "结束数据", lastIndex, "")
-        for (let i = initIndex; i < lastIndex; i++) {
-            // that.arrayData[i]=(data[i])
-            this.$set(that.arrayData, i, (data[i]))
-            // console.log(data)
-        }
-        console.log(that.arrayData)
-        // console.log(this.arrayData)
-    }
-    function thorttle(fn, time) {
-        window.flag = null;
-        return function () {
-            if (!window.flag) {
-                window.flag = true;
-                fn();
-                setTimeout(() => {
-                    window.flag = false;
-                }, time)
-            }
-        }
-    }
-    // 滚动节流
-
-    const throttleHandleScroll = thorttle(handleScroll, 100)
-    // 监听滚动
-    window.addEventListener('scroll', throttleHandleScroll);
-
-}
 
 /**
  * 
@@ -515,7 +446,16 @@ function addMonitorObjectElement(childIdName, parentIdName, data, count, border,
 
 }
 
-
+/**
+ * 
+ * @param {*} originData 
+ * @param {*} outputData 
+ * @des 列表分块渲染-例子可以看html/blocklist.html
+ * @eg 
+ * let originData=[0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3]
+let outputData=[]
+blockLoading(originData,outputData)
+ */
 function blockLoading(originData,outputData) {
     
     let total = originData.length;
@@ -541,6 +481,32 @@ function blockLoading(originData,outputData) {
     loop(total, index, originData);
     
 }
-let originData=[0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3,0,5,6,9,7,4,1,2,3]
-let outputData=[]
-blockLoading(originData,outputData)
+
+// querypage=1&pagesize=10&keyword=45
+
+
+function pageLoading(curryPage,originData) {
+    function getQueryObject(url) {
+        url = url == null ? window.location.href : url
+        const search = url.substring(url.lastIndexOf('?') + 1)
+        const obj = {}
+        const reg = /([^?&=]+)=([^?&=]*)/g
+        search.replace(reg, (rs, $1, $2) => {
+          const name = decodeURIComponent($1)
+          let val = decodeURIComponent($2)
+          val = String(val)
+          obj[name] = val
+          return rs
+        })
+        return obj
+      }
+      let page = getQueryObject()
+    if(JSON.stringify(curryPage)=="{}"){
+        console.log(getQueryObject())
+    }
+    let nowData=originData.slice((page.querypage - 1) * page.pagesize, page.querypage * page.pagesize)
+    return nowData
+}
+
+let a=[{"id":1,"name":56},{"id":2,"name":56},{"id":3,"name":56},{"id":4,"name":56},{"id":5,"name":56},{"id":6,"name":56}]
+pageLoading({},a)
