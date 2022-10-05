@@ -4,14 +4,15 @@
         
         function addListenerPage() {
             try {
-                window.addEventListener("pageshow", () => {
-                    window.timeStr = new Date().getTime()
-                    alert("开始监控")
-                });
+                // window.addEventListener("pageshow", () => {
+                //     window.timeStr = new Date().getTime()
+                //     alert("开始监控")
+                // });
                 window.addEventListener("load", () => {
                     window.timeStr = new Date().getTime()
                     alert("开始监控")
                 });
+                // history
                 window.addEventListener('pagehide', () => {
                     let t = (new Date().getTime() - window.timeStr) / 1000
                     localStorage.setItem("time", t)
@@ -29,7 +30,7 @@
                     // alert("停留了"+localStorage.getItem("time")+"秒")
                 })
 
-                // onhashchange 好像是vue的
+                // onhashchange 是vue的
                 window.addEventListener('hashchange', () => {
                     let t = (new Date().getTime() - window.timeStr) / 1000
                     localStorage.setItem("time", t)
@@ -57,6 +58,7 @@
     </script> -->
 <script>
     function addMonitorElement(idName) {
+        
         function timer(n_hour, n_min, n_sec) {
             // var n_sec = 0; //秒
             // var n_min = 0; //分
@@ -75,12 +77,10 @@
                     // window.str_min = "0" + n_min;
                     window.str_min = n_min;
                 }
-
                 if (window.str_hour < 10) {
                     // window.str_hour = "0" + n_hour;
                     window.str_hour = n_hour;
                 }
-
                 var time = window.str_hour + ":" + window.str_min + ":" + window.str_sec;
                 console.log(time, "时间")
                 n_sec++;
@@ -92,8 +92,6 @@
                     n_sec = 0;
                     n_hour++;
                 }
-
-
             }, 1000);
         }
         //暂停

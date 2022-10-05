@@ -1,5 +1,6 @@
 # 个人封装的常用工具类 
 
+# ver 0.1.1 增加es6.js 里面有一些es6 以上的常用新特性实例
 ## ver 0.1.0 增加dom.js分页 功能 示例看html/pagelist.html
 ## ver 0.0.9 增加tree树状处理 tree.js 分块渲染 （列表性能优化,可看BlockList.html  方法引用在dom.js 10w条数据进行处理 看block.html）
 ## ver 0.0.8 增加domjs 虚拟列表 （列表性能优化）

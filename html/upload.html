@@ -10,47 +10,95 @@
 </head>
 
 <body>
-    <input type="file" id="fileInput">
-    <a id="showProgress" style="display:none;" href="#"></a>
-    <button id="uploadBtn">上传</button>
-    <a href="http://localhost:3000/static/index.png">下载txt</a>
-    <button id="download">下载</button>
+    <div>
+        单文件
+        <input type="file" id="fileInputCommon">
+
+        <button id="uploadBtnCommon">上传</button>
+    </div>
+
+
+
+    <div style="margin-top: 500px;">
+        切片
+        <input type="file" id="fileInput">
+        <a id="showProgress" style="display:none;" href="#"></a>
+        <button id="uploadBtn">上传</button>
+
+    </div>
+
+    <div style="margin-top: 500px;">
+
+        <a  href="http://localhost:3000/static/index.jpg" download>下载txt</a>
+        <button id="download">直接下载</button>
+        <button id="downloadDisk">下载磁盘</button>
+    </div>
 </body>
+
+
+
 <script>
 
+
+    // window.open("http://localhost:3000/static/index.jpg")
+    // 下载之二：blob转化
     async function download(param) {
         try {
             // 我们使用axios设置接口返回类型 responseType: "blob", 所以这里从后端返回的是blob。
             console.log(param, "url")
-            // const res = await fetch("http://localhost:3000/static/files/t01b6ccc26385b75557.jpg")
-            const res = await fetch(param, {
-                method: 'POST',
-                // responseType: "arraybuffer",
-                // responseType: "blob",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                // body: JSON.stringify({
-                //   firstParam: 'yourValue',
-                //   secondParam: 'secondValue',
-                // })
-            })
-            //处理文件（二进制）
+            const res = await fetch(param)
             const blob = await res.blob()
-            //把url指向blob
+            //把url指向blob 
+            // 静态方法会创建一个 DOMString，其中包含一个表示参数中给出的对象的URL。
+            // 这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的URL 对象表示指定的 File 对象或 Blob 对象。
             let url = URL.createObjectURL(blob)
             const alink = document.createElement('a');
+            // url.split('/').pop();
             alink.href = url
-            alink.download = "t01b6ccc26385b75557.jpg"
+            alink.download = new Date().getTime() + ".jpg"
             alink.style.display = "none";
             alink.click();
             alink.remove()
+            //解绑
             URL.revokeObjectURL(url)
         } catch (e) {
             console.error(e)
         }
     }
+    document.querySelector('#download').addEventListener(('click'), () => {
+        download("http://localhost:3000/static/index.jpg")
+
+    })
+</script>
+<script>
+    // 下载之二：blob url 
+    async function downloadProgress(response) {
+        const reader = response.body.getReader();
+
+        // Step 2：获得总长度（length）
+        const contentLength = +response.headers.get('Content-Length');
+
+        // Step 3：读取数据
+        let receivedLength = 0; // 当前接收到了这么多字节
+        let chunks = []; // 接收到的二进制块的数组（包括 body）
+        while (true) {
+            const { done, value } = await reader.read();
+
+            if (done) {
+                break;
+            }
+
+            chunks.push(value);
+            receivedLength += value.length;
+
+            console.log(`Received ${receivedLength} of ${contentLength}`)
+        }
+
+
+        // alert("下载完成");
+
+    }
+
 
     async function downloadBig(param) {
         try {
@@ -70,6 +118,7 @@
                 //   secondParam: 'secondValue',
                 // })
             })
+
             //处理文件（二进制）
             const blob = await res.blob()
             //把url指向blob
@@ -77,10 +126,17 @@
             const handle = await window.showSaveFilePicker({
                 suggestedName: "hello",
                 types: [
-                {
+                 
+                    {
                         description: "jpeg file",
                         accept: {
                             "image/jpeg": [".jpeg"],
+                        },
+                    },
+                    {
+                        description: "rar file",
+                        accept: {
+                            "application/json": [".rar"],
                         },
                     },
                     {
@@ -88,20 +144,32 @@
                         accept: {
                             "text/plain": [".txt"],
                         },
-                    }, 
+                    },
+                    {
+                        description: "text file",
+                        accept: {
+                            "text/plain": [".txt"],
+                        },
+                    },
                 ],
             });
             const writable = await handle.createWritable();
             await writable.write(blob);
+            
             await writable.close();
-
+            // setTimeout(()=>{
+            //     URL.revokeObjectURL(url)
+            // },0)
+            URL.revokeObjectURL(url)
         } catch (e) {
             console.error(e)
         }
     }
-    document.getElementById('download').addEventListener('click', () => {
-        downloadBig('http://localhost:3000/static/index.png')
+    document.getElementById('downloadDisk').addEventListener('click', () => {
+        downloadBig('http://localhost:3000/static/index.jpg')
     })
+</script>
+<script>
 
 
 
@@ -193,3 +261,20 @@
 </script>
 
 </html>
+
+<script>
+        // const res = await fetch(param, {
+            //     method: 'POST',
+            //     // responseType: "arraybuffer",
+            //     // responseType: "blob",
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-Type': 'application/json',
+            //     },
+            //     // body: JSON.stringify({
+            //     //   firstParam: 'yourValue',
+            //     //   secondParam: 'secondValue',
+            //     // })
+            // })
+            //处理文件（二进制）
+</script>

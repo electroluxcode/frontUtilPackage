@@ -58,9 +58,7 @@
             this.querypage = Number(this.getQueryObject().querypage)
             this.pagesize = Number(this.getQueryObject().pagesize)
             setTimeout(() => {
-                //array 数组虚拟列表
-                // this.addMonitorArrayElement("text", "container", this.initData, 30, 20, this)
-                // object 对象虚拟列表
+                //分页功能
                 let temp = this.pageLoading({}, this.objectData)
                 this.lastData = temp
             }, 0)
