@@ -180,27 +180,6 @@ function addListenerIdPos(idName) {
         if (eleHeight < clientHeight + scrollTop + 20) {
             console.log("能看见元素", eleHeight, scrollTop, clientHeight)
         }
-        // if ( clientHeight + scrollTop + 20<eleHeight+window.innerHeight) {
-        //     console.log("超过了xxx元素", eleHeight, scrollTop, clientHeight)
-        // }
-
-        // console.table([{
-        //     label: "可视区高度",
-        //     value: clientHeight,
-        // },
-        // {
-        //     label: "滚动条总高度",
-        //     value: scrollHeight,
-        // },
-        // {
-        //     label: "距顶部",
-        //     value: scrollTop,
-        // },
-        // {
-        //     label: "距底部",
-        //     value: scrollHeight - (scrollTop + clientHeight),
-        // },
-        // ]);
     }
     function thorttle(fn, time) {
         window.flag = null;
@@ -319,7 +298,7 @@ function addMonitorElement(idName) {
 
         }, 1000);
     }
-    //暂停
+    //暂停 
     window.isFirstEle = true
     window.str_hour = 0, window.str_min = 0, window.str_sec = 0
 
@@ -331,7 +310,7 @@ function addMonitorElement(idName) {
         var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         // 可视区高度
         var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
-        // 元素位置
+        // 元素距离顶部位置
         // console.log("id的name：" + idName + "  new之后这个没有值，前面的有值 this.idname：" + this.idName)
         var eleHeight = document.getElementById(idName).offsetTop
         // console.log("bu能看见元素",eleHeight,scrollTop,clientHeight)
@@ -388,7 +367,7 @@ function addMonitorElement(idName) {
             this.addMonitorObjectElement("text", "container", this.objectData, 30, 5, this)
        }, 0)
  */
-function addMonitorObjectElement(childIdName, parentIdName, data, count, border, that) {
+function addMonitorObjectElement( parentIdName, data, count, border, that) {
     // this.childrenHeight = childrenHeight
     // 初始化前几个数据
     for (var n = 0; n < 20; n++) {
@@ -397,7 +376,7 @@ function addMonitorObjectElement(childIdName, parentIdName, data, count, border,
     }
     const handleScroll = () => {
         //可视区域大小 一开始本来是想要动态计算，结果发现运用在实际项目中受到padding 和 margin 之类的影响太大了，于是就去掉了。
-        var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        // var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
 
         let parentHeight = document.getElementById(parentIdName).offsetHeight
         // document.querySelectorAll('#text') 子元素数量 
@@ -484,7 +463,12 @@ function blockLoading(originData,outputData) {
 
 // querypage=1&pagesize=10&keyword=45
 
-
+/**
+ * 
+ * @param {*} curryPage  http://127.0.0.1:5501/html/pageList.html?querypage=1&pagesize=5传入空值 {}
+ * @param {*} originData  初始数据
+ * @returns  返回 截取后的数据 ，后端不分页，我们自己分一下
+ */
 function pageLoading(curryPage,originData) {
     function getQueryObject(url) {
         url = url == null ? window.location.href : url
