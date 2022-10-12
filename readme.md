@@ -1,6 +1,11 @@
 # 个人封装的常用工具类 
 
 
+# ver 0.1.2 ts基础的学习的 防抖节流封装curry的封装（装饰器） 
+目录在ts_utils/base/index.ts
+
+
+# ver 0.1.1 新建ts方法
 增加手写promise 和一些类的方法
 关于劫持console.log()
 ```

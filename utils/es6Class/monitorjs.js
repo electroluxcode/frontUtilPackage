@@ -18,13 +18,13 @@ class MonitorJS {
         options = options || {};
         this.consoleError = options.consoleError === true;  //显式配置
         if (this.consoleError) {
-            // new ConsoleError(param).handleError();
+            new ConsoleError(param).handleError();
             console.log("初始化方法")
         }
     }
 
 }
-new MonitorJS.init({
-    consoleError:true
-})
+// new MonitorJS().init({
+//     consoleError:true
+// })
 export default MonitorJS;
