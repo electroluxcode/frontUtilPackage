@@ -25,6 +25,7 @@
             })
             cvs.addEventListener('mousemove', (e) => {
                 e = e || window.event;
+       
                 if (isDraw) {
                     console.log(e.pageX, e.pageY)
                     ctx.lineTo(e.pageX, e.pageY);

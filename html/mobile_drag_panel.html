@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 300px;
+            width: 100%;
+        }
+
+        .top {
+            background: rgb(212, 80, 80);
+            flex: 1;
+            overflow: hidden;
+            height: 10px;
+            border: 1px solid white;
+
+        }
+
+        .bottom {
+            background: rgb(122, 122, 155);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 200px;
+        }
+
+        .drag1 {
+            width: 50px;
+            height: 50px;
+            background: skyblue;
+            margin: 0 auto;
+            position: absolute;
+            top: -15px;
+            left: 40%;
+            z-index: 999;
+            /* 文本不能被选择 */
+            user-select: none;
+            /* 鼠标hover显示的鼠标形状 */
+            cursor: pointer;
+
+        }
+
+        .panel {
+            flex: 1;
+            overflow: hidden;
+
+        }
+    </style>
+
+    <div class="container">
+        <div class="top">
+            你好你是顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶
+            你好你是顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶
+            你好你是顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶
+            你好你是顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶
+        </div>
+        <div class="bottom">
+            <div class="drag1">拖拽按钮 </div>
+            <div class="panel">
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+                下面下面下面下面下面下面下面下面下面下面下面
+            </div>
+
+        </div>
+
+
+    </div>
+    <script>
+
+
+        // pc端适配
+        const btn1 = document.querySelector('.drag1')
+        const main1 = btn1.parentElement
+        let isMove = false
+        let mouseY = 0
+        //每一次拖拽的坐标
+        let cuttHeight = 0
+        main1.addEventListener('mousedown', e => {
+            e = e || window.event;
+            mouseY = e.pageY
+            isMove = true;
+            currHeight = main1.offsetHeight
+
+
+        })
+        btn1.addEventListener('mouseup', e => {
+            isMove = false
+
+        })
+        btn1.addEventListener('mousemove', e => {
+            e = e || window.event;
+
+            if (isMove) {
+                const moveTop = e.pageY - mouseY
+                console.log(currHeight - moveTop)
+                main1.style.height = currHeight - moveTop + "px"
+                console.log(main1.style.height)
+            }
+        })
+
+
+        // 移动端适配
+
+        main1.addEventListener('touchstart', e => {
+            e = e || window.event;
+
+            isMove = true;
+            currHeight = main1.offsetHeight
+
+            mouseY = e.changedTouches[0].clientY
+        })
+        btn1.addEventListener('touchend', e => {
+            isMove = false
+        })
+        btn1.addEventListener('touchmove', e => {
+            if (isMove) {
+                const moveTop = e.changedTouches[0].clientY - mouseY
+                console.log(moveTop)
+                main1.style.height = currHeight - moveTop + "px"
+                // console.log(main1.style.height)
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>

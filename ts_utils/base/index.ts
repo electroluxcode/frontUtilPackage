@@ -16,7 +16,7 @@ setTimeout(() => {
     paramDebounce.onClickTest()
 }, 1500); 
  */
-function debounce(time: number = 0.3) {
+function debounce(time: number = 1000) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         let fn = descriptor.value;
         let flag: any = null;
@@ -36,7 +36,7 @@ function debounce(time: number = 0.3) {
  * @returns  节流
  * @ex 使用在class 中 @thorttle(500) 这样就可以了
  */
-function thorttle(time: number = 100) {
+function thorttle(time: number = 1000) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         let fn = descriptor.value;
         let flag: any = null;

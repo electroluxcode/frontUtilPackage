@@ -467,6 +467,193 @@ new desCase().eat()
 
 
 
+## 2.4 object(record)约束
+
+通过这玩意可以约束object的类型
+
+```ts
+// 高级：如果我们要定义一个对象的key和value
+
+interface PageInfo {
+    title: string;
+    id?:number
+}
+type Page = "home" | "about" | "contact" | string;
+
+// 知识点1：定义一个对象的key，value值。前面的是type（意味着在要key必须是这个type）.
+// 知识点1.1 Record后面的泛型就是对象键和值的变量名和类型值
+const nav: Record<Page, PageInfo> = {
+    about: { title: "about2" },
+    contact: { title: "contact" },
+    home: { title: "home" },
+};
+
+type NewIndex = "name" | "age" | "id"
+
+//知识点1.2第二个参数给interface类型
+const NewObject: Record<NewIndex, PageInfo> = {
+    name: { title: "about2",id:5 },
+    id: { title: "contact" },
+    age: { title: "home" },
+};
+
+//知识点1.3第二个参数直接给基础类型
+const New1Object: Record<NewIndex, number> = {
+    name: 2,
+    id: 3,
+    age:7,
+};
+
+
+// 看到评论区好像有一种更好的方法 试过后不好用
+const obj: { [key: string ] : number } = {}
+```
+
+
+
+## 2.5 Partial(属性全部可选)
+
+生成一个新类型，该类型与 T 拥有相同的属性，但是所有属性皆为可选项
+
+```ts
+interface Foo {
+    name: string
+    age: number
+}
+type Bar = Partial<Foo>
+// 相当于
+type Bar = {
+    name?: string
+    age?: number
+}
+```
+
+
+
+## 2.6 Required(属性全部必选)
+
+生成一个新类型，该类型与 T 拥有相同的属性，但是所有属性皆为必选项
+
+```ts
+interface Foo {
+    name: string
+    age?: number
+}
+type Bar = Required<Foo>
+// 相当于
+type Bar = {
+    name: string
+    age: string
+}
+```
+
+## 2.7 readonly
+
+```ts
+interface Foo {
+    name: string
+    age: number
+}
+type Bar = Readonly<Foo>
+// 相当于
+type Bar = {
+    readonly name: string
+    readonly age: string
+}
+
+```
+
+
+
+## 2.8 Pick(属性取合集)
+
+```ts
+interface Foo {
+    name: string;
+    age?: number;
+    gender: string;
+}
+type Bar = Pick<Foo, 'age' | 'gender'>
+// 相当于
+// type Bar = {
+//     age?: number
+//     gender: string
+// }
+
+// const todo: Bar= {
+//    age: 3,
+//    gender: "男"
+// };
+// console.log(todo)
+```
+
+
+
+## 2.9  类型体操里面可能会用
+
+
+
+```ts
+// 1.Exclude 返回string 差集 Extract  并集
+type A = number | string | boolean
+type B = number | boolean
+
+type Foo = Exclude<A, B>
+
+// type的返回差集 
+// 相当于
+// type Foo = number | boolean 之类的
+let temp1:Foo = "sa"
+```
+
+
+
+
+
+
+
+# 3.文档知识
+
+
+
+## 3.1交叉类型
+
+
+
+交叉类型是将多个类型合并为一个类型。这个里欸行能够拥有所有类型的特性
+
+
+
+
+
+
+
+# 4.类型体操
+
+
+
+
+
+```
+首先你的node版本是要在node 16.0 以上的，这就意味着你最好弄一个nvm ，然后一些安装nvm的东西可以看到这个链接https://blog.csdn.net/QWERTYQ16/article/details/124497532
+
+nvm list available
+nvm install 16.18.0
+nvm use 16.18.0
+node -v
+
+因为每一个题目他都有测试用例，所以在每一个
+npm install @type-challenges/utils 
+```
+
+
+
+
+
+
+
+
+
 
 
 

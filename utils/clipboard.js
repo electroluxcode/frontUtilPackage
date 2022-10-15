@@ -17,3 +17,7 @@ function copyToClipboard(copyValue) {
     //删除新节点(重置操作)
     document.body.removeChild(oInput);
 }
+
+
+
+
