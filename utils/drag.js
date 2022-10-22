@@ -34,4 +34,6 @@ function dragPanel(btnElement) {
             console.log(main1.style.height)
         }
     })
+
+    
 }

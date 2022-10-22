@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+        :root{
+            --scale:1
+        }
+        #ScaleBox {
+            /* --scale: 1; */
+        }
+
+        .ScaleBox {
+            position: absolute;
+            transform: scale(var(--scale)) translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            transform-origin: 0 0;
+            left: 50%;
+            top: 50%;
+            transition: 0.3s;
+            z-index: 999;
+            /* width: 1920px; */
+        }
+    </style>
+<body>
+    <div class="ScaleBox">
+        <h1>dsadsadas</h1>
+        <h2>2332</h2>
+        <h1>dsadsadas</h1>
+      
+    </div>
+    
+
+    <script>
+        function adapition(rootEle) {
+            let scale = "";
+            let width = 1920;
+            let height = 937;
+            function getScale() {
+                // let { width, height } = this;
+                let wh = window.innerHeight / height;
+                let ww = window.innerWidth / width;
+                console.log(ww < wh ? ww : wh);
+                return ww < wh ? ww : wh;
+            }
+            function setScale() {
+                console.log("执行到这里了")
+                if (window.innerHeight == 1080) {
+                    document.querySelector(".ScaleBox").style.cssText = `height:1080px ;width:1920px`;
+                    // document.querySelector(".ScaleBox").style.cssText = `width:1920px `;
+                } else {
+                    document.querySelector(".ScaleBox").style.cssText = `height:937px;width:1920px `;
+         
+                }
+                scale = getScale();
+                console.log(scale)
+                // if (this.$refs.ScaleBox) {
+                //   this.$refs.ScaleBox.style.setProperty("--scale", this.scale);
+                // }
+                document.body.style.setProperty("--scale", scale);
+            }
+            function debounce(fn, time) {
+                window.flag = null;
+                return function () {
+                    clearTimeout(window.flag)
+                    window.flag = setTimeout(() => {
+                        fn()
+                    }, time)
+                }
+            }
+            // setScale();
+            window.addEventListener("resize", debounce(setScale, 100));
+            // setInterval(setScale(),1000)
+        }
+        adapition()
+    </script>
+
+    
+</body>
+
+</html>
