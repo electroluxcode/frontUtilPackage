@@ -21,6 +21,28 @@ function quickSort(data, key) {
     }
     return quickSort(left, key).concat([temp], quickSort(right, key))
 }
+/**
+ * 
+ * @param {*} data :array  
+   let temp = [1,5,2,5,6,9]
+   quickSort(temp)
+ */
+function quickSort(data){
+    if(data.length<=1){
+        return data
+    }
+    let left = []
+    let right = []
+    let temp = data[0]
+    for(let i=1;i<data.length;i++){
+        if(data[i]>=temp){
+            right.push(data[i])
+        }else{
+            left.push(data[i])
+        }
+    }
+    return quickSort(left).concat([temp],quickSort(right))
+}
 
 
 

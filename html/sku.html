@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * sku：（Stock Keeping Unit）：规格 商品多规格选择的解法
+         * 例如商品有颜色有大小有类别，我们要根据用户选择来改变库存
+         * 即将不可选的规格置灰
+         * 1 表示可以选
+         * 若用户选择了其中一个 attribute ，根据上一步赋值后的邻接矩阵来判断 attribute 是否可选：
+         * o(n^2):遍历每一个规格。
+         * o(n):图
+         * 
+        */
+        // 库存列表
+
+        //1.重要：初始化基本变量
+        // 顶点集为['1L', '4L', '白色', '黑色']
+        let properties = [
+            {
+                id: "1",
+                attributes: [
+                    { value: "白色", isActive: false, isDisabled: false },
+                    { value: "黑色", isActive: false, isDisabled: false },
+                ],
+            },
+            {
+                id: "2",
+                attributes: [
+                    { value: "xl", isActive: false, isDisabled: false },
+                    { value: "xxxl", isActive: false, isDisabled: false },
+                ],
+            },
+            {
+                id: "3",
+                attributes: [
+                    { value: "卫衣", isActive: false, isDisabled: false },
+                    { value: "T恤", isActive: false, isDisabled: false },
+                ],
+            },
+        ];
+        //有两个相同就会有问题  xl-黑色-卫衣
+        // 根本原因：因为矩阵用1表示，这就说明只能表示两个直接的关系。
+        // 但是我们的项目中是不止两个直接的关系的。所以要大改
+        // 我们 选中 第0个白色 [0, 1, 1, 1, 1, 1] + 第二个 xl [1, 1, 0, 1, 1, 1] 。取交集发现
+        // 出现了黑色-xl-卫衣这一选项
+        let skuList = [
+            { id: "10", attributes: ["白色", "xl", "卫衣"], value: 1 },
+            { id: "20", attributes: ["白色", "xl", "T恤"], value: 5 },
+            { id: "20", attributes: ["黑色", "xl", "T恤"], value: 5 },
+            // { id: "30", attributes: ["黄色", "xxxl", "T恤"], value: 10 },
+
+            // { id: "40", attributes: ["4L", "黑色"] },
+        ];
+        // 根据顶点集初始化空的邻接矩阵，即为4*4的元素值均为0的空矩阵
+        let vertexList = [] //-属性-顶点数组
+        let matrix = [] // 属性关系-邻接矩阵
+
+        //2.重要：这里封装初始化矩阵方法-属性数列。用来后续构建邻接矩阵用的
+        properties.forEach((prop) => {
+            prop.attributes.forEach((attr) => {
+                vertexList.push(attr.value);
+            });
+        });
+        console.log("properties属性队列：", vertexList) //['1L', '4L', '白色', '黑色']
+        for (let i = 0; i < vertexList.length; i++) {
+            //4*4的全是0的矩阵
+            matrix[i] = new Array(vertexList.length).fill(0);
+        }
+        var outputArray = JSON.parse(JSON.stringify(matrix));
+        //重要：3.构造联系矩阵
+        //判断 outputArray[index1][index2] 是否有值，若有值，则使用 add 方法在集合中增加当前传入的 skuId，否则赋值为新创建的 Set 对象，并在集合中增加当前传入的 skuId。
+        function associateAttributes(attributes, origin, skuId) {
+            if (origin == "skulist") {
+                //这里的意思是将3，4
+                attributes.forEach((attr1) => {
+                    attributes.forEach((attr2) => {
+                        if (attr1 !== attr2) {
+                            const col = vertexList.indexOf(attr1);
+                            const row = vertexList.indexOf(attr2);
+                            //找到了这个数字
+                            if (row > -1 && col > -1) {
+                                // 如果每个的属性仅仅只有两个的话，这样也是没关系的
+                                if (outputArray[row][col]) {
+                                    outputArray[row][col].add(skuId);
+                                }
+                                else {
+                                    outputArray[row][col] = new Set([skuId]);
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+            else if (origin == "properties") {
+                attributes.forEach((attr1) => {
+                    attributes.forEach((attr2) => {
+                        if (attr1.value !== attr2.value) {
+                            const col = vertexList.indexOf(attr1.value);
+                            const row = vertexList.indexOf(attr2.value);
+                            //找到了这个数字
+                            if (row > -1 && col > -1) {
+                                // 如果每个的属性仅仅只有两个的话，这样也是没关系的
+                                if (outputArray[row][col]) {
+                                    outputArray[row][col].add(skuId);
+                                }
+                                else {
+                                    outputArray[row][col] = new Set([skuId]);
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+        }
+        // 列表中的可选,skulist里面的相连接
+        skuList.forEach((value) => {
+            associateAttributes(value.attributes, "skulist", value.id);
+        });
+
+        //同种属性可选，直接连接
+        properties.forEach((value) => {
+            associateAttributes(value.attributes, "properties", '1');
+        });
+
+        console.log("邻接矩阵最终的值", outputArray)
+        //重要：4.最后查看能选啥
+
+        //查看当前选项是否可选。构造res数组
+        let selected = ["黑色"];
+        let res = []
+        // { id: "10", attributes: ["白色", "xl", "卫衣"], value: 1 },
+        // { id: "20", attributes: ["白色", "xl", "T恤"], value: 5 },
+        // { id: "20", attributes: ["黑色", "xl", "T恤"], value: 5 },
+        selected.forEach((value) => {
+            const row = vertexList.indexOf(value)
+            const col = vertexList.indexOf("T恤");
+            res.push(outputArray[row][col])
+        })
+        console.log("res",res)
+
+
+        //状态判断
+        console.log()
+        let state = null;
+        //没有关系
+        if (res.some((item) => (item === 0))) {
+            state = false;
+        }
+        //这是相同品类的赋值（已经进行了我方向的修改）
+        else if (res.some((item) => (item.has('1')))) {
+            state = false;
+        }
+        //当且仅当每个 Set 对象中包含相同的一个 skuId 时,返回true
+        else {
+            const first = res[0];
+            const others = res.slice(1);
+            //经历了两层之后。第一个值是选中sku的id，然后去到others里面找就好了
+            state = Array.from(first).some((skuId) => (others.every((item) => (item.has(skuId)))));
+        }
+        console.log("当前状态",state)
+
+
+
+
+    </script>
+    <!-- <script>
+        //不用算法
+         /**
+         * sku：（Stock Keeping Unit）：规格 商品多规格选择的解法
+         * 例如商品有颜色有大小有类别，我们要根据用户选择来改变库存
+         * 即将不可选的规格置灰
+         * 若用户选择了其中一个 attribute ，根据上一步赋值后的邻接矩阵来判断 attribute 是否可选：
+         * o(n^2):遍历每一个规格。
+         * o(n):图
+         * 
+        */
+        // 库存列表
+
+        //1.重要：初始化基本变量
+        // 顶点集为['1L', '4L', '白色', '黑色']
+        let properties = [
+            {
+                id: "1",
+                attributes: [
+                    { value: "白色", isActive: false, isDisabled: false },
+                    { value: "黄色", isActive: false, isDisabled: false },
+                ],
+            },
+            {
+                id: "2",
+                attributes: [
+                    { value: "xl", isActive: false, isDisabled: false },
+                    { value: "xxxl", isActive: false, isDisabled: false },
+                ],
+            },
+            {
+                id: "3",
+                attributes: [
+                    { value: "卫衣", isActive: false, isDisabled: false },
+                    { value: "T恤", isActive: false, isDisabled: false },
+                ],
+            },
+        ];
+        let skuList = [
+            { id: "10", attributes: ["白色", "xl", "卫衣"], value: 1 },
+            { id: "20", attributes: ["白色", "xxxl", "T恤"], value: 5 },
+            { id: "30", attributes: ["黄色", "xxxl", "T恤"], value: 10 },
+        ];
+        let iSelect=["T恤","xl"];
+
+        //查看当前组合可不可以被选中
+        skuList.forEach((value)=>{
+            let res= []
+            iSelect.forEach((iSelectVal)=>{
+                let index = value.attributes.indexOf(iSelectVal)
+                res.push(index)
+            })
+            let is = res.every((item) => item > -1);
+            // console.log("查看当前组合和不可以被选中",is)
+        })
+
+        //查看当前组合还可以搭配啥
+        iSelect=["黄色","xxxl"];
+        skuList.forEach((value)=>{
+            let res= []
+            iSelect.forEach((iSelectVal)=>{
+                let index = value.attributes.indexOf(iSelectVal)
+                res.push(index)
+            })
+            let is = res.every((item) => item > -1);
+            let index = value.attributes.indexOf(iSelect)
+            
+            if(is){
+                console.log(value)
+            }
+        })
+    </script> -->
+</body>
+
+</html>

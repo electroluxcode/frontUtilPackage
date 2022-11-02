@@ -1,5 +1,17 @@
 # 个人封装的常用工具类 
 
+
+
+# ver 0.1.5 添加sku的学习，添加邻接矩阵。项目中的实现可以查看 https://blog.csdn.net/weixin_44589540/article/details/122347089  。 自己做了一个实例 html/stu.html
+
+```
+关于我对该博主的一些思考。properties，有向图赋值 1 是有问题的。当我们选择到这个属性大类。相同的属性大类就可以被选中。而这个属性大类是超过skulist类别中的。这就会出现不在这个属性类中，用户还可以进行提交订单的操作。目前的想法是 将this.associateAttributes(prop.attributes, '1')这一行删掉。不然提交了错误的订单信息只会更恼火
+至于他说的根据 properties来设置联系的情况。我认为在这种情况下可以引导用户去双击按钮来进行相同属性大类的切换
+举一个实例：从上到下依次勾选1L,红色，套餐一。由于他 properties的设置，这时候的 properties是可以切换成套餐二的。但是skulist并没有1L,红色，套餐二的选项。这就是一个超出边界的bug了
+
+```
+
+
 # ver 0.1.4 增加自适应demo.用于数据大屏 selfadaption.js html/adaption.html
 # ver 0.1.2 ts基础的学习的 防抖节流封装curry的封装（装饰器） 
 目录在ts_utils/base/index.ts
