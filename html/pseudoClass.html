@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 伪类的使用示例 -->
+    <!-- 图形生成。在一些精致的UI实现 -->
+    <div class="quote">
+        <span>基本使用示例1</span>
+    </div>
+    <style>
+        .quote:before,
+        .quote:after {
+            content: "";
+            display: inline-block;
+            width: 5%;
+            margin: 5px 1%;
+            border-bottom: 1px solid blue;
+        }
+    </style>
+<style>
+    a::before{
+        content: url("https://www.baidu.com/img/baidu_jgylogo3.gif");
+    }
+    a::after{
+        content:"("attr(href)")";
+    }
+    a{
+        text-decoration: none;
+    }
+    </style>
+    ---------------------------
+    <body>
+    <a href="http://www.baidu.com">百度</a>
+    </body>    
+
+</body>
+
+</html>

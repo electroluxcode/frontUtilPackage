@@ -74,9 +74,6 @@ const curryObject = (fn) => {
 // let test = cSum([{ id: 3, name: "ceshi1" },{ id: 9, name: "ceshi1" }])([{ id: 1, name: "ceshi1" }])([{ id: 8, name: "ceshi1" }])([{ id: 58, name: "ceshi1" }])([{ id: 7, name: "ceshi1" }])([{ id: -1, name: "ceshi1" }]);
 // console.log((window.arr))
 
-
-
-
 /**
  * 
  * @param {*} fn 

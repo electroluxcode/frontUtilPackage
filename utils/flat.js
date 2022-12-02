@@ -18,44 +18,67 @@ function flatten(arr) {
  * @des 树形数据的平面化
  * @returns 
  * @eg
-   let data = [{
-    "id": "11",
-    "name": "测试11",
-    "pId": "1",
-    "children": [
-        {
-            "id": "111",
-            "name": "测试111",
-            "pId": "11",
-        },
-        {
-            "id": "112",
-            "name": "测试112",
-            "pId": "11",
-            "children": [
-                {
-                    "id": "1112",
-                    "name": "测试1121",
-                    "pId": "112"
-                }
-            ]
-        }
-    ]
-}];
-let result = []
-const res1 = treeToFlat(data, ["name", "id","pId"], result)
-console.log('4. 树形数据扁平化', res1)
+   
+
+
+let output1 = [
+    {
+        "id": 1,
+        "parentId": 0,
+        "name": "一级菜单A",
+        "rank": 1,
+        "children": [
+            {
+                "id": 4,
+                "parentId": 1,
+                "name": "二级菜单A-A",
+                "rank": 2,
+                "children": [
+                    {
+                        "id": 5,
+                        "parentId": 4,
+                        "name": "二级菜单A-A",
+                        "rank": 2,
+                        "children": [
+                            {
+                                "id": 6,
+                                "parentId": 5,
+                                "name": "二级菜单A-A",
+                                "rank": 2,
+                                "children": [
+                                   
+                                    {
+                                        "id": 8,
+                                        "parentId": 6,
+                                        "name": "二级菜单A-A",
+                                        "rank": 2,
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
+treeToArray(output1)
+
  */
-function treeToFlat(data, key, result) {
-    data.forEach(item => {
-        let obj = {}
-        for (i of key) {
-            obj[i] = item[i]
+
+
+
+function treeToArray(arr){
+    let result = []
+    for(let i = 0 ; i<arr.length ; i++){
+        console.log()
+        if(JSON.stringify(arr[i].children)=='[]'){
+            result.push(arr[i])
+        }else{
+            result.push(arr[i])
+            result = result.concat(treeToArray(arr[i].children)) 
         }
-        result.push(obj)
-        if (item.children?.length) {
-            treeToFlat(item.children, key, result)
-        }
-    })
+    }
     return result
 }
