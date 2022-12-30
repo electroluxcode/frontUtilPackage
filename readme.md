@@ -3,6 +3,10 @@
 
 优化树状转化平面的逻辑和平面转化树状使得逻辑更加好懂
 
+
+# ver 0.1.6 添加热键组合 hotkey.js
+
+
 # ver 0.1.5 添加sku的学习，添加邻接矩阵。项目中的实现可以查看 https://blog.csdn.net/weixin_44589540/article/details/122347089  。 自己做了一个实例 html/stu.html
 
 ```
