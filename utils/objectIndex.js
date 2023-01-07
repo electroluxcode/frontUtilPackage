@@ -1,3 +1,80 @@
+
+
+
+/**
+ * 
+ * @param {*} key 
+ * @param {*} data 
+ * 
+ [{id:1},{id:2}] 自己维护一个数据，用来解决hook持久化的问题
+ */
+function save(key,data,status){
+  let temp =[]
+  if(status==true){
+    localStorage.clear(key)
+    return '清除完成'
+  }
+  if(localStorage.getItem(key)){
+    temp = JSON.parse(localStorage.getItem(key))
+    temp.push(data)
+    localStorage.setItem(key,JSON.stringify(temp))
+    return  JSON.parse(localStorage.getItem(key))
+  }else{
+    localStorage.setItem(key,JSON.stringify(data))
+    return  JSON.parse(localStorage.getItem(key))
+  }
+  
+  
+}
+
+function unique(arr,e){
+  let hash = {}; //定义一个hash表
+  let arr1 = []; //定义一个新数组
+  for(let i=0;i<arr.length;i++){
+    if(!hash[arr[i][e]]){
+      hash[arr[i][e]] = true;
+      arr1.push(arr[i]);
+    }
+  }
+  return arr1;  
+}
+
+function save(key,data,status){
+  let temp =[]
+  if(status==true){
+    localStorage.clear(key)
+    return '清除完成'
+  }
+  if(localStorage.getItem(key)){
+    temp = JSON.parse(localStorage.getItem(key))
+    temp.push(data)
+    // 自己添加
+    unique(temp,"name")
+    temp[0].filters((value,index)=>{
+      return 
+    })
+    localStorage.setItem(key,JSON.stringify(temp))
+    return  JSON.parse(localStorage.getItem(key))
+  }else{
+    localStorage.setItem(key,JSON.stringify(data))
+    return  JSON.parse(localStorage.getItem(key))
+  }
+  
+  
+}
+
+
+
+
+let data =  {id:1}
+let key = "te"
+save(key,data)
+
+
+
+
+
+
 /**
  * Merges two objects, giving the last one precedence
  * @param {Object} target
@@ -71,14 +148,63 @@ export function objectAddAttribute(target, key, value) {
  * @des 性能优化里面的东西，可以冻结对象
  */
 
-function deepFreeze(o){
-  var prop,propKey;
+function deepFreeze(o) {
+  var prop, propKey;
   Object.freeze(o);//首先冻结第一层对象
-  for(propKey in o){
-      prop = o[propKey];
-      if(!o.hasOwnProperty(propKey) || !(typeof prop === "object") || Object.isFrozen(prop)){
-          continue;
-      }
-      deepFreeze(prop);//递归
+  for (propKey in o) {
+    prop = o[propKey];
+    if (!o.hasOwnProperty(propKey) || !(typeof prop === "object") || Object.isFrozen(prop)) {
+      continue;
+    }
+    deepFreeze(prop);//递归
   }
 }
+
+
+/**
+ * 
+ * @param {*} o 
+ * @des 将两个object里面的key转化成指定的
+ */
+let originObject = [
+  {
+    "key": 0,
+    "name": "未知"
+  },
+  {
+    "key": 1,
+    "name": "0.2s"
+  },
+  {
+    "key": 2,
+    "name": "0.3s"
+  },
+  {
+    "key": 3,
+    "name": "0.5s"
+  },
+  {
+    "key": 4,
+    "name": "0.6s"
+  },
+  {
+    "key": 5,
+    "name": "0.9s"
+  }
+]
+let fromKey = ["key", "name"]
+let toKey = ["label", "value"]
+function objectConvertKey(originObject, fromKey, toKey) {
+  let length = fromKey.length
+  let res = []
+  originObject.forEach((e)=>{
+    let temp = {}
+    for(let i = 0 ;i<length;i++){
+      temp[toKey[i]]=e[fromKey[i]]
+    }
+    res.push(temp)
+  })
+  return res
+}
+
+objectConvertKey(originObject,fromKey,toKey)

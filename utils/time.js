@@ -1,3 +1,31 @@
+
+
+function timeInterval(fun){
+  if(localStorage.getItem("onchange")){
+    if(Number(new Date().getTime())-localStorage.getItem("onchange")>1000){
+      console.log("超过了1秒")
+      fun()
+      localStorage.setItem("onchange",Number(new Date().getTime()))
+    }else{
+      console.log("1秒內")
+      
+      localStorage.setItem("onchange",Number(new Date().getTime()))
+    }
+  }else{
+    fun()
+    localStorage.setItem("onchange",Number(new Date().getTime()))
+    console.log("初始化")
+  }
+}
+
+
+
+
+
+
+
+
+
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
