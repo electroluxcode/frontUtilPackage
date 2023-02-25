@@ -78,3 +78,22 @@ const ajax = function (conf) { // ajax操作
 //     console.log(res)
 // }
 // let conf={url:"https://bcfaf400-630a-4598-9617-c0d6337c9a9b.bspapp.com/login?name=ruibo&password=123456",success:success,error:error}  ;ajax(conf)
+
+
+let ajax1 = (data,url)=>{
+    //step1 : 设置请求头
+    let xhr = new XMLHttpRequest(); 
+    //step2：设置请求方式和请求头 //true表示异步
+	xhr.open("POST", url, true);   
+    xhr.setRequestHeader("Content-type", "application/json");
+    //step3：请求数据
+    xhr.send(data);
+     // step4：readyState是xhr的请求状态
+     //状态4表示已发送请求，服务器已完成返回响应，浏览器已完成了下载响应内容。0-4都有值的
+    xhr.onreadystatechange = function() {
+     
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log(xhr.responseText);
+      }
+  };
+}

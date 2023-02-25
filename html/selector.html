@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Scroll Snap 垂直</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* 核心样式 */
+        .container {
+            scroll-snap-type: y mandatory;
+            /* 需要把滚动条设置到直接父容器，
+                scroll-snap-type 才能生效，
+                默认是在 body 上，现在是 main 上 */
+            overflow: scroll;
+            height: 100vh;
+        }
+
+        .page1,
+        .page2,
+        .page3,
+        .page0,
+        .page4 {
+            width: 96vw;
+            height: 100vh;
+            scroll-snap-align: center;
+            display: grid;
+            place-items: center;
+            font-size: 2em;
+
+        }
+    </style>
+
+    <style>
+        .switch {
+            position: fixed;
+            top: 20px;
+            right: 50px
+        }
+
+        .switchButton {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="switch">
+            <div class="switchButton" index="0">⚫</div>
+            <div class="switchButton" index="1">⚫</div>
+            <div class="switchButton" index="2">⚫</div>
+            <div class="switchButton" index="3">⚫</div>
+            <div class="switchButton" index="4">⚫</div>
+        </div>
+        <div class="page0">页面一</div>
+        <div class="page1">页面二</div>
+        <div class="page2">页面三</div>
+        <div class="page3">页面四</div>
+        <div class="page4">页面五（上下滚动也行）</div>
+
+    </div>
+
+    <script>
+        document.querySelector(".switch").addEventListener("click", (e) => {
+            let index = e.target.getAttribute("index")
+            document.querySelector(".page" + index).scrollIntoView({
+                behavior: "smooth",// 平滑过渡
+                block: "start", //垂直方向的对齐
+                inline: "start"
+            })
+        })
+    </script>
+</body>
+
+</html>
