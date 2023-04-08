@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        
+        let ajax1 = (data,url)=>{
+            //step1 : 设置请求头
+            let xhr = new XMLHttpRequest(); 
+            //step2：设置请求方式和请求头 //true表示异步
+            xhr.open("POST", url, true);   
+            xhr.setRequestHeader("Content-type", "application/json");
+            //step3：请求数据
+            xhr.send(data);
+            // step4：readyState是xhr的请求状态
+            //状态4表示已发送请求，服务器已完成返回响应，浏览器已完成了下载响应内容。0-4都有值的
+            xhr.onreadystatechange = function() {
+            
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        }
+
+        let url = "https://127.0.0.1:5501/api/post"
+        let data  = {id:2}
+        ajax1(data,url)
+    </script>
+</body>
+</html>

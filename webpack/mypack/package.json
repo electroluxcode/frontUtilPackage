@@ -1,0 +1,24 @@
+{
+  "name": "webpack_pack13",
+  "version": "1.0.0",
+  "description": "核心：从webpack.config.js 生成一个 xx.js",
+  "main": "index.js",
+  "bin": {
+    "my_pack": "bin/my_pack.js"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/generator": "^7.21.3",
+    "@babel/traverse": "^7.21.3",
+    "@babel/types": "^7.21.3",
+    "babylon": "^6.18.0"
+  }
+}

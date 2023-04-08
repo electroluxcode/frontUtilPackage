@@ -3,6 +3,7 @@
 
 优化树状转化平面的逻辑和平面转化树状使得逻辑更加好懂
 
+# ver 0.1.7 添加手写webpack
 
 # ver 0.1.6 添加热键组合 hotkey.js | 添加objectIndex的hash 值判断算法(去重)
 

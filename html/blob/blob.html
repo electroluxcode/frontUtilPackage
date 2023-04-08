@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- <img crossOrigin  src="" id="imgInit" srcset=""> -->
+    <script type="module">
+        // 功能点1：文字输出
+        let blobInit = new Blob(["helloworld"],{type:"text/plain"})
+        let blobHandle = blobInit.slice(0,5)
+        let res = new FileReader() //这里后面跟着res.onload(()=>{}) 也可以
+        res.readAsText(blobHandle)
+
+        // 输出
+        // setTimeout(()=>{
+        //     console.log(res.result)
+        // },5)
+       
+        // blob.html:1 Uncaught DOMException: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.
+        // 上面的是图片跨域的错误，可以添加crossOrigin来进行避免
+        // 功能点2：图像输出
+
+        const canvas = document.createElement('canvas')
+        // 这里时你的 宽
+        canvas.width = 200
+        canvas.height = 200
+        const ctx = canvas.getContext('2d')
+        let img = new Image()//创建新的图片对象
+        img.src = 'https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/e08da34488b114bd4c665ba2fa520a31.svg';
+        img.setAttribute("crossOrigin",'Anonymous')
+        img.onload = function(){//图片加载完，再draw 和 toDataURL
+            ctx.drawImage(img, 0, 0)
+            document.body.appendChild(canvas)
+
+            // file | blob 变成别的东西
+            // 1.file->base64（dataurl）：createObjectURL  
+            // console.log("1：",URL.createObjectURL(file))
+
+            // 2.file->base64：FileReader readAsDataURL
+            // const fr = new FileReader(file)
+            // fr.readAsDataURL(file)
+			// fr.onload = function () {
+            //     console.log("2：",fr.result)
+			// }
+            
+            
+            // img video变成canvas
+            // img.onload(()=>{console.log(img)})  
+            // ctx.drawImage(video)
+
+            // canvas 变成别的东西
+            //1.canvas->base64格式（dataurl）：toDataURL
+            console.log("canvas->base64格式：",canvas.toDataURL('image/png'))
+            //2.canvas->base64格式：toBlob
+            canvas.toBlob((res)=>{
+                console.log("canvas->blob格式：",res)
+            })
+
+
+            // dataurl 除了显示还可以下载 
+            
+            // downloadImg ()
+        };
+        
+    </script>
+
+
+
+
+    <img src="https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web/e08da34488b114bd4c665ba2fa520a31.svg" id="img" srcset="">
+    <video controls="" src="blob.mp4"  id ="video" type="video/webm" style="width: 50%;"></video>
+    <canvas></canvas>
+    <button onclick="captureImg()">点我截图</button>
+    <button onclick="downloadImg()">点我下载</button>
+
+
+    <script>
+        //功能点1：滤镜
+        let img = document.querySelector("#img")
+        let video = document.querySelector("#video")
+        const canvas = document.createElement('canvas')
+        img.style.filter = "opacity(0.5)"
+        video.style.filter = "contrast(200%)"
+
+
+        //功能点2：截图
+        //step1:通过canvas 然后ctx.drawImage
+        //step2:然后通过todataurl就可以了
+        function captureImg(){
+            
+            canvas.width = 200
+            canvas.height = 200
+            const ctx = canvas.getContext('2d')
+            // 要保存的元素
+            let temp = document.querySelector("#video")
+            // 重要：video才可以这么用
+            ctx.drawImage(temp, 0, 0, canvas.width, canvas.height)
+            document.querySelector("#img").src = canvas.toDataURL('image/png')
+        }
+        function downloadImg () {
+                const ctx = canvas.getContext('2d')
+           
+                // 要保存的元素
+                let temp = document.querySelector("body")
+                ctx.drawImage(temp, 0, 0, canvas.width, canvas.height)
+
+
+                let aLink = document.createElement('a')
+                aLink.download = 'fileName.png' // 文件名后缀需要和dataurl表示的相同，否则可能乱码
+                aLink.href = canvas.toDataURL('image/png')
+                aLink.click()
+                // URL.revokeObjectURL(aLink)
+         }
+        //功能点3：图片播放
+
+    </script>
+</body>
+</html>
