@@ -102,6 +102,19 @@ Object.getOwnPropertyDescriptor(Document.prototype,"cookie").get.name
 
 
 
+// hook 函数 封装
+
+function hook({fn:fn,fnInfo:fnInfo,isDebug,})
+
+
+
+// 登录：
+// ctrl + shift +f
+// 猜测＋断点 ，之后可以把上面的 变量名 输出一下。 这里输出的是空间，然后我们需要拿到数据那么我们就可以用val来进行
+//  找到加密解密的过程，然后想aes需要16位的key 和 内容
+
+// 可以写一个 crypto 的通用hook
+
 
 
 // --------------例子------------------
